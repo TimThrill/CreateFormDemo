@@ -18,5 +18,8 @@
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MvcDynamicForms-master\MvcDynamicForms.Core\MvcDynamicForms.Core.csproj" />
+  </ItemGroup>
 
 </Project>
