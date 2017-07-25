@@ -44,6 +44,12 @@ namespace CreateFormDemo.Controllers
             {
                 JObject moduleForm = JObject.Parse(file.ReadToEnd());
                 string formName = moduleForm["Module"]["Name"].ToString();
+
+                JToken sections = moduleForm["Module"]["Content"];
+                foreach (JToken section in sections)
+                {
+                    string sectionName = section["Name"].ToString();
+                }
             }
             return View();
         }
