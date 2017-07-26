@@ -1,36 +1,30 @@
 {
   "Module": {
     "Name": "Pre-employemnt",
-    "Content": [
+    "Sections": [
       {
         "Name": "Section1",
-        "Content": [
+        "Questions": [
           {
             "name": "Question 1",
             "type": "SelectList",
             "title": "Sex",
-            "Values": [
-              { "male": 0 },
-              { "female": 1 }
-            ]
+            "Values": [ "male", "female" ]
           },
           {
             "name": "Question 2",
             "type": "SelectList",
             "title": "Age over 18",
             "Values": [
-              { "Yes": true },
-              { "No": false }
+              "Yes",
+              "No"
             ]
           },
           {
             "name": "Question 3",
             "type": "SelectList",
             "title": "Current available?",
-            "Values": [
-              {"Yes": true},
-              {"No": false }
-            ]
+            "Values": [ "Yes","No" ]
           }
         ] 
       }

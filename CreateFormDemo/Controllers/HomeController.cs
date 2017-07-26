@@ -7,6 +7,10 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Hosting;
+using MvcDynamicForms.Core;
+using MvcDynamicForms.Core.Fields;
+using Microsoft.AspNetCore.Http;
+using MvcDynamicForms.Demo.Models;
 
 namespace CreateFormDemo.Controllers
 {
@@ -40,18 +44,52 @@ namespace CreateFormDemo.Controllers
 
         public IActionResult Form()
         {
+            /*
+            Form form = new Form();
             using (StreamReader file = System.IO.File.OpenText(hostingEnvironment.ContentRootPath + "\\FormModule.json"))
             {
                 JObject moduleForm = JObject.Parse(file.ReadToEnd());
                 string formName = moduleForm["Module"]["Name"].ToString();
 
-                JToken sections = moduleForm["Module"]["Content"];
-                foreach (JToken section in sections)
+                JToken sections = moduleForm["Module"]["Sections"];
+                foreach(var section in sections)
                 {
-                    string sectionName = section["Name"].ToString();
+                    foreach (var question in section["Questions"])
+                    {
+                        string title = question["title"].ToString();
+                        string values = "";
+                        foreach (var value in question["Values"])
+                        {
+                            values += value.ToString() + ",";
+                        }
+                        values.Remove(values.Length - 1);
+
+                        var radioOption = new RadioList
+                        {
+                            ResponseTitle = title,
+                            Required = true,
+                            Prompt = "Please select " + title,
+                            Orientation = MvcDynamicForms.Core.Enums.Orientation.Horizontal
+                        };
+                        radioOption.AddChoices(values);
+                        form.Fields.Add(radioOption);
+                    }
                 }
             }
-            return View();
+            */
+            var form = FormProvider.GetForm();
+            form.Serialize = true;
+            return View(form);
+        }
+
+        [HttpPost]
+        public IActionResult Form(Form form)
+        {
+            if (form.Validate())
+            {
+                Console.Write("");
+            }
+            return View(form);
         }
 
         public IActionResult Error()
