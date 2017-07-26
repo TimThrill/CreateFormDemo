@@ -155,6 +155,7 @@
                     string.Format(@"<textarea readonly=""readonly"" rows=""8"" cols=""60"">{0}</textarea>", GetEULA())
             };
 
+            /*
             var file = new FileUpload
             {
                 Prompt = "Your photo",
@@ -166,6 +167,7 @@
             };
             file.Validated += new ValidatedEventHandler(file_Validated);
             file.Posted += new FilePostedEventHandler(file_Posted);
+            */
 
             var hidden = new Hidden
             {
@@ -175,17 +177,19 @@
 
             // create form and add fields to it
             var form = new Form();
-            form.AddFields(description, name, gender, email, sports, states, bio, month, agree, eula, file, hidden);
+            form.AddFields(description, name, gender, email, sports, states, bio, month, agree, eula, /*file,*/ hidden);
 
             return form;
         }
 
+        /*
         static void file_Posted(FileUpload fileUploadField, EventArgs e)
         {
             // here, you can do something with the posted file
             // (save it, email it, etc, or test it and report back to the user)
             // this event gets fired as soon as the dynamic form is model bound
         }
+
 
         static void file_Validated(InputField inputField, InputFieldValidationEventArgs e)
         {
@@ -209,6 +213,7 @@
                 }
             }
         }
+        */
 
         private static string GetEULA()
         {
