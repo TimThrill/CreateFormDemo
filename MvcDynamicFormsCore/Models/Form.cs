@@ -63,7 +63,8 @@
         {
             var formWrapper = new TagBuilder("div");
             formWrapper.AddCssClass("MvcDynamicForm");
-            formWrapper.InnerHtml = PlaceHolders.Fields + PlaceHolders.SerializedForm + PlaceHolders.DataScript;
+            //formWrapper.InnerHtml = PlaceHolders.Fields + PlaceHolders.SerializedForm + PlaceHolders.DataScript;
+            formWrapper.InnerHtml.Append(PlaceHolders.Fields + PlaceHolders.SerializedForm + PlaceHolders.DataScript);
             return formWrapper.ToString();
         }
 
@@ -85,10 +86,11 @@
 
                 var script = new TagBuilder("script");
                 script.Attributes["type"] = "text/javascript";
-                script.InnerHtml = string.Format("{0}var {1} = {2};",
+                //script.InnerHtml = string.Format("{0}var {1} = {2};",
+                script.InnerHtml.Append(string.Format("{0}var {1} = {2};",
                     Environment.NewLine,
                     jsVarName,
-                    data.ToJson());
+                    data.ToJson()));
 
                 return script.ToString();
             }
@@ -144,7 +146,8 @@
                 hdn.Attributes["id"] = MagicStrings.MvcDynamicSerializedForm;
                 hdn.Attributes["name"] = MagicStrings.MvcDynamicSerializedForm;
                 hdn.Attributes["value"] = SerializationUtility.Serialize(this);
-                html.Replace(PlaceHolders.SerializedForm, hdn.ToString(TagRenderMode.SelfClosing));
+                // html.Replace(PlaceHolders.SerializedForm, hdn.ToString(TagRenderMode.SelfClosing));
+                html.Replace(PlaceHolders.SerializedForm, hdn.ToString());
             }
 
             html.Replace(PlaceHolders.DataScript, this.RenderDataScript(null));
@@ -224,10 +227,12 @@
 
         internal void FireModelBoundEvents()
         {
+            /*
             foreach (var fileUpload in this.Fields.Where(x => x is FileUpload).Cast<FileUpload>())
             {
                 fileUpload.FireFilePosted();
             }
+            */
         }
     }
 }

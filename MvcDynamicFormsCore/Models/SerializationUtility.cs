@@ -1,8 +1,10 @@
 ﻿namespace MvcDynamicForms.Core
 {
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Web.UI;
 
     public static class SerializationUtility
     {
@@ -33,8 +35,8 @@
 
                 main.Add(item.Key, temp);
             }
-            var json = new JavaScriptSerializer();
-            return json.Serialize(main);
+            var json = JsonConvert.SerializeObject(main, Formatting.None);
+            return json;
         }
     }
 }
