@@ -1,5 +1,33 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model MvcDynamicForms.Core.Form
+
+<h2>Lavaro Demo Form</h2>
 @{
+    if (ViewContext.ViewData.ModelState.ErrorCount > 0)
+    {
+        <div class="alert alert-danger">
+            <strong>Error:</strong> @Html.ValidationSummary(false, "")
+        </div>
+    }
 }
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.Raw(Model.RenderHtml(true))
+
+    <input type="submit" value="Submit" />
+}
+@section scripts{
+    <script type="text/javascript">
+        /* You can build in client side funcationality with dynamic forms also.
+        jQuery is very good for this sort of thing. */
+
+        $(function () {
+
+            // hide error labels when the user clicks on the offending input element
+            $('div.MvcFieldWrapper :input').focus(function () {
+                $(this).closest('div.MvcFieldWrapper').children('label.MvcDynamicFieldError').fadeOut();
+            });
+        });
+    </script>
+}
+
