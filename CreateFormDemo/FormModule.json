@@ -6,30 +6,199 @@
         "Name": "Section1",
         "Questions": [
           {
-            "name": "Question 1",
-            "type": "SelectList",
-            "title": "What is your general state of health",
+            "Name": "1",
+            "Type": "RadioList",
+            "Title": "What is your general state of health",
             "Values": [ "very good", "good", "fair" ]
           },
           {
-            "name": "Question 2",
-            "type": "SelectList",
-            "title": "Are you receiving any medical treatment or medication at present or have you received medical treatment in the last five years?",
+            "Name": "2",
+            "Type": "RadiotList",
+            "Title": "Are you receiving any medical treatment or medication at present or have you received medical treatment in the last five years?",
             "Values": [
               "Yes",
               "No"
             ]
           },
           {
-            "name": "Question 3",
-            "type": "SelectList",
-            "title": "Current available?",
+            "Name": "2a",
+            "Type": "TextArea",
+            "Title": "If Yes, for what condition/s:",
+            "Required": false
+          },
+          {
+            "Name": "3",
+            "Type": "RadioList",
+            "Title": "Have you ever suffered any work-related injuries or conditions, etc.?",
             "Values": [ "Yes", "No" ]
           },
           {
-            "name": "Question 4",
-            "type": "TextArea",
-            "title": "Tex area text"
+            "Name": "4",
+            "Type": "RadioList",
+            "Title": "Have you suffered any other injuries/conditions that required medical treatment?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "4a",
+            "Type": "TextArea",
+            "Title": "If Yes, what and when?",
+            "Required": false
+          },
+          {
+            "Name": "5",
+            "Type": "RadioList",
+            "Title": "Have you ever worked in a noisy environment or an environment where you have been required to wear hearing protection?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "6",
+            "Type": "RadioList",
+            "Title": "Do you wear glasses/contact lenses?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "7",
+            "Type": "RadioList",
+            "Title": "Have you ever worked in an environment containing asbestos?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "8",
+            "Type": "RadioList",
+            "Title": "Have you ever worked in an environment with exposure to chemicals?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "",
+            "Type": "TextArea",
+            "Title": "If Yes, details:",
+            "Required": false
+          },
+          {
+            "Name": "9",
+            "Type": "RadioList",
+            "Title": "Have you ever worked in an environment with exposure to dust/fumes/gases?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "",
+            "Type": "TextArea",
+            "Title": "If Yes, details:",
+            "Required": false
+          },
+          {
+            "Name": "10",
+            "Type": "RadioList",
+            "Title": "Have you ever worked in an environment exposure to prolonged loud noise?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "11",
+            "Type": "RadioList",
+            "Title": "Have you ever been refused life insurance or a job because of poor health?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "12",
+            "Type": "RadioList",
+            "Title": "Any family history of major illness like diabetes, heart disease, epilepsy etc.?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "",
+            "Type": "TextArea",
+            "Title": "If Yes, details:",
+            "Required": false
+          },
+          {
+            "Name": "13",
+            "Type": "RadioList",
+            "Title": "On average, how many times a week do you do exercise?",
+            "Values": [ "Less than once", "1 to 2", "At least 3" ]
+          },
+          {
+            "Name": "",
+            "Type": "TextArea",
+            "Title": "Describe activity:",
+            "Required": false
+          },
+          {
+            "Name": "14",
+            "Type": "RadioList",
+            "Title": "Do you drink alcohol?",
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "Name": "",
+            "Type": "TextArea",
+            "Title": "No. of years:",
+            "Required": false
+          },
+          {
+            "Name": "",
+            "Type": "TextArea",
+            "Title": "Standard drinks per week:",
+            "Required": false
+          },
+          {
+            "Name": "15",
+            "Type": "RadioList",
+            "Title": "Do you smoke?",
+            "Values": [ "Yes", "No", "Ex-smoker" ]
+          },
+          {
+            "Name": "",
+            "Type": "RadioList",
+            "Title": "What types:",
+            "Values": [ "Cigarette", "Cigars", "Pipe" ]
+          },
+          {
+            "Name": "",
+            "Type": "TextArea",
+            "Title": "No. of years:",
+            "Required": false
+          },
+          {
+            "Name": "",
+            "Type": "TextArea",
+            "Title": "No. per day:",
+            "Required": false
+          },
+          {
+            "Name": "16",
+            "Type": "RadioList",
+            "Title": "Have you ever had (select if Yes):",
+            "Values": [
+              "Epilepsy, fits, fainting attacks",
+              "Rheumatism, arthritis, joint disease",
+              "Paralysis or stroke",
+              "Hernia",
+              "Mental illness, depression, nervous breakdown",
+              "Neck and back problem",
+              "High blood pressure on heart problem",
+              "Tendinitis, tenosynovitis, RSI",
+              "Asthma, TB, pneumonia or any chest condition",
+              "Cancer of any kind",
+              "Peptic ulcer, hepatitis, pancreatitis, bowel disease",
+              "Any skin disorder",
+              "Varicose veins",
+              "Allergy to medication or chemicals",
+              "Hearing, speech and sight changes",
+              "Any infectious disease",
+              "Diabetes, kidney or thyroid trouble",
+              "Any operations",
+              "Any Gynaecological problems",
+              "Any operations",
+              "Others"
+            ],
+            "Required": false,
+            "Multiple": true
+          },
+          {
+            "Name": "",
+            "Type": "TextArea",
+            "Title": "If yes, please write details:",
+            "Required": false
           }
         ] 
       }
