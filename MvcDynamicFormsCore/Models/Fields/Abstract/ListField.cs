@@ -103,6 +103,20 @@
         /// <summary>
         /// Provides a convenient way to add choices.
         /// </summary>
+        /// <param name="choices"></param>
+        public void AddChoices(string[] choices)
+        {
+            if (choices == null) return;
+
+            foreach (var choice in choices)
+            {
+                this._choices.Add(new ListItem(choice));
+            }
+        }
+
+        /// <summary>
+        /// Provides a convenient way to add choices.
+        /// </summary>
         /// <param name="choices">A comma delimited string of choices.</param>
         public void AddChoices(string choices)
         {

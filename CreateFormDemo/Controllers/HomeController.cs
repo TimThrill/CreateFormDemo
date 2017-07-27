@@ -63,12 +63,7 @@ namespace CreateFormDemo.Controllers
                         if (questionType.Equals("RadioList"))
                         {
                             string title = question["Title"].ToString();
-                            string values = "";
-                            foreach (var value in question["Values"])
-                            {
-                                values += value.ToString() + ",";
-                            }
-                            values.Remove(values.Length - 1);
+                            string[] values = question["Values"].ToObject<string[]>();
 
                             var radioOption = new RadioList
                             {
@@ -100,13 +95,8 @@ namespace CreateFormDemo.Controllers
                                 Prompt = questionName + title,
                                 Orientation = Orientation.Horizontal
                             };
-                            string choices = "";
-                            foreach (var value in question["Values"])
-                            {
-                                choices += (value.ToString() + "&");
-                            }
-                            choices.Remove(choices.Length - 1);
-                            checkBoxList.AddChoices(choices, "&");
+                            string[] choices = question["Values"].ToObject<string[]>();
+                            checkBoxList.AddChoices(choices);
                             form.Fields.Add(checkBoxList);
                         }
                     }
