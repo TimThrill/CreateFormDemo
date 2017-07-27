@@ -11,39 +11,80 @@ namespace MvcDynamicForms.Core
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc.Internal;
     using System.Text.Encodings.Web;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
-    class DynamicFormModelBinder : IModelBinder
+    public class DynamicFormModelBinder : IModelBinder
     {
-        private readonly IModelBinder _fallbackBinder;
-
-        public DynamicFormModelBinder(IModelBinder fallbackBinder)
-        {
-            if (fallbackBinder == null)
-                throw new ArgumentNullException(nameof(fallbackBinder));
-
-            _fallbackBinder = fallbackBinder;
-        }
-
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)
                 throw new ArgumentNullException(nameof(bindingContext));
 
-            var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+            var postedForm = bindingContext.ActionContext.HttpContext.Request.Form;
 
-            if (valueProviderResult == ValueProviderResult.None)
+            var form = (Form)bindingContext.Model;
+
+            if (form == null && !string.IsNullOrEmpty(postedForm[MagicStrings.MvcDynamicSerializedForm]))
             {
-                var valueAsString = valueProviderResult.FirstValue;
-
-                if (string.IsNullOrEmpty(valueAsString))
-                {
-                    return _fallbackBinder.BindModelAsync(bindingContext);
-                }
-
-                var result = HtmlEncoder.Default.Encode(valueAsString);
-                bindingContext.Result = ModelBindingResult.Success(result);
+                form = SerializationUtility.Deserialize<Form>(postedForm[MagicStrings.MvcDynamicSerializedForm]);
             }
+
+            if (form == null)
+                throw new NullReferenceException(
+                    "The dynamic form object was not found.Be sure to include PlaceHolders.SerializedForm in your form template.");
+
+            foreach (var key in postedForm.Keys.Where(k => k.StartsWith(form.FieldPrefix)))
+            {
+                string fieldKey = key.Remove(0, form.FieldPrefix.Length);
+                InputField dynField = form.InputFields.SingleOrDefault(f => f.Key == fieldKey);
+
+                if (dynField == null)
+                    continue;
+
+                if (dynField is ListField)
+                {
+                    var lstField = (ListField)dynField;
+
+                    // clear all choice selections
+                    foreach (var choice in lstField.Choices)
+                        choice.Selected = false;
+
+                    // set current selections
+                    foreach (var value in postedForm[key])
+                    {
+                        var choice = lstField.Choices.FirstOrDefault(x => x.Value == value);
+                        if (choice != null)
+                            choice.Selected = true;
+                    }
+                }
+                else if (dynField is TextField)
+                {
+                    var txtField = (TextField)dynField;
+                    txtField.Value = postedForm[key];
+                }
+            }
+            bindingContext.Result = ModelBindingResult.Success(form);
             return TaskCache.CompletedTask;
         }
     }
+
+    /*
+    public class DynamicFormModelBinderProvider : IModelBinderProvider
+    {
+        public IModelBinder GetBinder(ModelBinderProviderContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (context.Metadata.ModelType == typeof(Form))
+            {
+                return new BinderTypeModelBinder(typeof(DynamicFormModelBinder));
+            }
+
+            return null;
+        }
+    }
+    */
 }

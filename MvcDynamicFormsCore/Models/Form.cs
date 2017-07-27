@@ -9,6 +9,7 @@
     using MvcDynamicForms.Core.Fields.Abstract;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using System.IO;
 
     /// <summary>
     /// Represents an html input form that can be dynamically rendered at runtime.
@@ -65,7 +66,10 @@
             formWrapper.AddCssClass("MvcDynamicForm");
             //formWrapper.InnerHtml = PlaceHolders.Fields + PlaceHolders.SerializedForm + PlaceHolders.DataScript;
             formWrapper.InnerHtml.Append(PlaceHolders.Fields + PlaceHolders.SerializedForm + PlaceHolders.DataScript);
-            return formWrapper.ToString();
+            StringWriter tmp = new StringWriter();
+            formWrapper.WriteTo(tmp, System.Text.Encodings.Web.HtmlEncoder.Default);
+            //return formWrapper.ToString();
+            return tmp.ToString();
         }
 
         /// <summary>
@@ -92,7 +96,10 @@
                     jsVarName,
                     data.ToJson()));
 
-                return script.ToString();
+                StringWriter tmp = new StringWriter();
+                script.WriteTo(tmp, System.Text.Encodings.Web.HtmlEncoder.Default);
+                //return script.ToString();
+                return tmp.ToString();
             }
 
             return null;
@@ -147,7 +154,12 @@
                 hdn.Attributes["name"] = MagicStrings.MvcDynamicSerializedForm;
                 hdn.Attributes["value"] = SerializationUtility.Serialize(this);
                 // html.Replace(PlaceHolders.SerializedForm, hdn.ToString(TagRenderMode.SelfClosing));
-                html.Replace(PlaceHolders.SerializedForm, hdn.ToString());
+                hdn.TagRenderMode = TagRenderMode.SelfClosing;
+                StringWriter tmp = new StringWriter();
+                hdn.WriteTo(tmp, System.Text.Encodings.Web.HtmlEncoder.Default);
+                //html.Replace(PlaceHolders.SerializedForm, hdn.ToString());
+                html.Replace(PlaceHolders.SerializedForm, tmp.ToString());
+                tmp.Close();
             }
 
             html.Replace(PlaceHolders.DataScript, this.RenderDataScript(null));

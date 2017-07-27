@@ -44,7 +44,6 @@ namespace CreateFormDemo.Controllers
 
         public IActionResult Form()
         {
-            /*
             Form form = new Form();
             using (StreamReader file = System.IO.File.OpenText(hostingEnvironment.ContentRootPath + "\\FormModule.json"))
             {
@@ -56,28 +55,43 @@ namespace CreateFormDemo.Controllers
                 {
                     foreach (var question in section["Questions"])
                     {
-                        string title = question["title"].ToString();
-                        string values = "";
-                        foreach (var value in question["Values"])
+                        string questionType = question["Type"].ToString();
+                        if (questionType.Equals("RadioList"))
                         {
-                            values += value.ToString() + ",";
-                        }
-                        values.Remove(values.Length - 1);
+                            string title = question["Title"].ToString();
+                            string values = "";
+                            foreach (var value in question["Values"])
+                            {
+                                values += value.ToString() + ",";
+                            }
+                            values.Remove(values.Length - 1);
 
-                        var radioOption = new RadioList
+                            var radioOption = new RadioList
+                            {
+                                ResponseTitle = title,
+                                Required = question["Required"] == null ? true : (bool)question["Required"],
+                                Prompt = title,
+                                Orientation = MvcDynamicForms.Core.Enums.Orientation.Horizontal
+                            };
+                            radioOption.AddChoices(values);
+                            form.Fields.Add(radioOption);
+                        }
+                        else if (questionType.Equals("TextArea"))
                         {
-                            ResponseTitle = title,
-                            Required = true,
-                            Prompt = "Please select " + title,
-                            Orientation = MvcDynamicForms.Core.Enums.Orientation.Horizontal
-                        };
-                        radioOption.AddChoices(values);
-                        form.Fields.Add(radioOption);
+                            string title = question["Title"].ToString();
+                            var textArea = new TextArea
+                            {
+                                ResponseTitle = title,
+                                Prompt = title,
+                                Required = true
+                            };
+                            form.Fields.Add(textArea);
+                        }
                     }
                 }
             }
-            */
-            var form = FormProvider.GetForm();
+            
+            //var form = FormProvider.GetForm();
             form.Serialize = true;
             return View(form);
         }
@@ -87,7 +101,7 @@ namespace CreateFormDemo.Controllers
         {
             if (form.Validate())
             {
-                Console.Write("");
+                return View("Responses", form);
             }
             return View(form);
         }

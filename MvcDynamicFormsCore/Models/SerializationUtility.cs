@@ -35,7 +35,9 @@
 
                 main.Add(item.Key, temp);
             }
-            var json = JsonConvert.SerializeObject(main, Formatting.None);
+            // var json = new JavaScriptSerializer();
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(main, Formatting.None);
+            //return json.Serialize(main);
             return json;
         }
     }

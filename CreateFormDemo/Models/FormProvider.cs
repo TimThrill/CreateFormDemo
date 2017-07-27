@@ -182,14 +182,15 @@
             return form;
         }
 
-        // static void file_Posted(FileUpload fileUploadField, EventArgs e)
-        //{
+        /*
+        static void file_Posted(FileUpload fileUploadField, EventArgs e)
+        {
             // here, you can do something with the posted file
             // (save it, email it, etc, or test it and report back to the user)
             // this event gets fired as soon as the dynamic form is model bound
         // }
 
-        /*
+
         static void file_Validated(InputField inputField, InputFieldValidationEventArgs e)
         {
             // here, you can also do something with the posted file
