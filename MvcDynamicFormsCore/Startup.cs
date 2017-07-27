@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MvcDynamicForms.Core;
 
 namespace MvcDynamicFormsCore
 {
@@ -17,7 +18,11 @@ namespace MvcDynamicFormsCore
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc(options => 
+            {
+                options.ModelBinderProviders.Insert(0, new DynamicFormModelBinderProvider());
+            }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

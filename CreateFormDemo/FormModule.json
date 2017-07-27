@@ -8,13 +8,13 @@
           {
             "name": "Question 1",
             "type": "SelectList",
-            "title": "Sex",
-            "Values": [ "male", "female" ]
+            "title": "What is your general state of health",
+            "Values": [ "very good", "good", "fair" ]
           },
           {
             "name": "Question 2",
             "type": "SelectList",
-            "title": "Age over 18",
+            "title": "Are you receiving any medical treatment or medication at present or have you received medical treatment in the last five years?",
             "Values": [
               "Yes",
               "No"

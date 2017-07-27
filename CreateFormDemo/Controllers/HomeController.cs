@@ -82,11 +82,11 @@ namespace CreateFormDemo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Form(Form form)
+        public IActionResult Form([ModelBinder(BinderType = typeof(DynamicFormModelBinder))]Form form)
         {
             if (form.Validate())
             {
-                Console.Write("");
+                return View("Responses", form);
             }
             return View(form);
         }
