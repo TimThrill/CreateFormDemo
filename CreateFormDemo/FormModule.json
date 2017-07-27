@@ -24,7 +24,12 @@
             "name": "Question 3",
             "type": "SelectList",
             "title": "Current available?",
-            "Values": [ "Yes","No" ]
+            "Values": [ "Yes", "No" ]
+          },
+          {
+            "name": "Question 4",
+            "type": "TextArea",
+            "title": "Tex area text"
           }
         ] 
       }

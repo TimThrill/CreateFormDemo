@@ -15,13 +15,6 @@ namespace MvcDynamicForms.Core
 
     public class DynamicFormModelBinder : IModelBinder
     {
-        private readonly IModelBinder _fallbackBinder = null;
-
-        public DynamicFormModelBinder()
-        {
-
-        }
-
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)
@@ -71,6 +64,7 @@ namespace MvcDynamicForms.Core
         }
     }
 
+    /*
     public class DynamicFormModelBinderProvider : IModelBinderProvider
     {
         public IModelBinder GetBinder(ModelBinderProviderContext context)
@@ -88,4 +82,5 @@ namespace MvcDynamicForms.Core
             return null;
         }
     }
+    */
 }

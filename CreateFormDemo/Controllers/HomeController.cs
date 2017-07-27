@@ -55,23 +55,31 @@ namespace CreateFormDemo.Controllers
                 {
                     foreach (var question in section["Questions"])
                     {
-                        string title = question["title"].ToString();
-                        string values = "";
-                        foreach (var value in question["Values"])
+                        string questionType = question["type"].ToString();
+                        if (questionType.Equals("SelectList"))
                         {
-                            values += value.ToString() + ",";
-                        }
-                        values.Remove(values.Length - 1);
+                            string title = question["title"].ToString();
+                            string values = "";
+                            foreach (var value in question["Values"])
+                            {
+                                values += value.ToString() + ",";
+                            }
+                            values.Remove(values.Length - 1);
 
-                        var radioOption = new RadioList
+                            var radioOption = new RadioList
+                            {
+                                ResponseTitle = title,
+                                Required = true,
+                                Prompt = "Please select " + title,
+                                Orientation = MvcDynamicForms.Core.Enums.Orientation.Horizontal
+                            };
+                            radioOption.AddChoices(values);
+                            form.Fields.Add(radioOption);
+                        }
+                        else if (questionType.Equals("TexArea"))
                         {
-                            ResponseTitle = title,
-                            Required = true,
-                            Prompt = "Please select " + title,
-                            Orientation = MvcDynamicForms.Core.Enums.Orientation.Horizontal
-                        };
-                        radioOption.AddChoices(values);
-                        form.Fields.Add(radioOption);
+                            string title = question["title"].ToString();
+                        }
                     }
                 }
             }
@@ -82,7 +90,7 @@ namespace CreateFormDemo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Form([ModelBinder(BinderType = typeof(DynamicFormModelBinder))]Form form)
+        public IActionResult Form(Form form)
         {
             if (form.Validate())
             {

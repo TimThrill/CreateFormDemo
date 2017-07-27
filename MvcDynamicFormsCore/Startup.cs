@@ -18,11 +18,7 @@ namespace MvcDynamicFormsCore
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc(options => 
-            {
-                options.ModelBinderProviders.Insert(0, new DynamicFormModelBinderProvider());
-            }
-            );
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
