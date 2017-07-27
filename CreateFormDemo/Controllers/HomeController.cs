@@ -55,10 +55,10 @@ namespace CreateFormDemo.Controllers
                 {
                     foreach (var question in section["Questions"])
                     {
-                        string questionType = question["type"].ToString();
-                        if (questionType.Equals("SelectList"))
+                        string questionType = question["Type"].ToString();
+                        if (questionType.Equals("RadioList"))
                         {
-                            string title = question["title"].ToString();
+                            string title = question["Title"].ToString();
                             string values = "";
                             foreach (var value in question["Values"])
                             {
@@ -69,16 +69,23 @@ namespace CreateFormDemo.Controllers
                             var radioOption = new RadioList
                             {
                                 ResponseTitle = title,
-                                Required = true,
-                                Prompt = "Please select " + title,
+                                Required = question["Required"] == null ? true : (bool)question["Required"],
+                                Prompt = title,
                                 Orientation = MvcDynamicForms.Core.Enums.Orientation.Horizontal
                             };
                             radioOption.AddChoices(values);
                             form.Fields.Add(radioOption);
                         }
-                        else if (questionType.Equals("TexArea"))
+                        else if (questionType.Equals("TextArea"))
                         {
-                            string title = question["title"].ToString();
+                            string title = question["Title"].ToString();
+                            var textArea = new TextArea
+                            {
+                                ResponseTitle = title,
+                                Prompt = title,
+                                Required = true
+                            };
+                            form.Fields.Add(textArea);
                         }
                     }
                 }

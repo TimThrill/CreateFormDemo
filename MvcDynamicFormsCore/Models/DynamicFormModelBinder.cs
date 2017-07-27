@@ -50,13 +50,17 @@ namespace MvcDynamicForms.Core
                         choice.Selected = false;
 
                     // set current selections
-                    foreach (var pkey in postedForm.Keys)
+                    foreach (var value in postedForm[key])
                     {
-                        var value = postedForm[pkey.ToString()];
                         var choice = lstField.Choices.FirstOrDefault(x => x.Value == value);
                         if (choice != null)
                             choice.Selected = true;
                     }
+                }
+                else if (dynField is TextField)
+                {
+                    var txtField = (TextField)dynField;
+                    txtField.Value = postedForm[key];
                 }
             }
             bindingContext.Result = ModelBindingResult.Success(form);
