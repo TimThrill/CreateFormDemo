@@ -57,6 +57,8 @@
                 // wrapper id
                 html.Replace(PlaceHolders.FieldWrapperId, this.GetWrapperId());
 
+                writer.Close();
+
                 return html.ToString();
             }
         }
