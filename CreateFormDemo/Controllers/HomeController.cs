@@ -11,6 +11,7 @@ using MvcDynamicForms.Core;
 using MvcDynamicForms.Core.Fields;
 using Microsoft.AspNetCore.Http;
 using MvcDynamicForms.Demo.Models;
+using MvcDynamicForms.Core.Enums;
 
 namespace CreateFormDemo.Controllers
 {
@@ -86,6 +87,24 @@ namespace CreateFormDemo.Controllers
                                 Required = true
                             };
                             form.Fields.Add(textArea);
+                        }
+                        else if (questionType.Equals("CheckBoxList"))
+                        {
+                            string title = question["Title"].ToString();
+                            var checkBoxList = new CheckBoxList
+                            {
+                                ResponseTitle = title,
+                                Prompt = title,
+                                Orientation = Orientation.Horizontal
+                            };
+                            string choices = "";
+                            foreach (var value in question["Values"])
+                            {
+                                choices += (value.ToString() + ",");
+                            }
+                            choices.Remove(choices.Length - 1);
+                            checkBoxList.AddChoices(choices, ",");
+                            form.Fields.Add(checkBoxList);
                         }
                     }
                 }

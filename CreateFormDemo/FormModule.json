@@ -166,7 +166,7 @@
           },
           {
             "Name": "16",
-            "Type": "RadioList",
+            "Type": "CheckBoxList",
             "Title": "Have you ever had (select if Yes):",
             "Values": [
               "Epilepsy, fits, fainting attacks",
