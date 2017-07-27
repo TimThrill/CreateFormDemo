@@ -57,6 +57,9 @@ namespace CreateFormDemo.Controllers
                     foreach (var question in section["Questions"])
                     {
                         string questionType = question["Type"].ToString();
+                        string questionName = question["Name"].ToString();
+                        if (!string.IsNullOrEmpty(questionName))
+                            questionName += ". ";
                         if (questionType.Equals("RadioList"))
                         {
                             string title = question["Title"].ToString();
@@ -71,7 +74,7 @@ namespace CreateFormDemo.Controllers
                             {
                                 ResponseTitle = title,
                                 Required = question["Required"] == null ? true : (bool)question["Required"],
-                                Prompt = title,
+                                Prompt = questionName + title,
                                 Orientation = MvcDynamicForms.Core.Enums.Orientation.Horizontal
                             };
                             radioOption.AddChoices(values);
@@ -83,7 +86,7 @@ namespace CreateFormDemo.Controllers
                             var textArea = new TextArea
                             {
                                 ResponseTitle = title,
-                                Prompt = title,
+                                Prompt = questionName + title,
                                 Required = true
                             };
                             form.Fields.Add(textArea);
@@ -94,16 +97,16 @@ namespace CreateFormDemo.Controllers
                             var checkBoxList = new CheckBoxList
                             {
                                 ResponseTitle = title,
-                                Prompt = title,
+                                Prompt = questionName + title,
                                 Orientation = Orientation.Horizontal
                             };
                             string choices = "";
                             foreach (var value in question["Values"])
                             {
-                                choices += (value.ToString() + ",");
+                                choices += (value.ToString() + "&");
                             }
                             choices.Remove(choices.Length - 1);
-                            checkBoxList.AddChoices(choices, ",");
+                            checkBoxList.AddChoices(choices, "&");
                             form.Fields.Add(checkBoxList);
                         }
                     }

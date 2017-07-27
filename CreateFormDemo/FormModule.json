@@ -13,7 +13,7 @@
           },
           {
             "Name": "2",
-            "Type": "RadiotList",
+            "Type": "RadioList",
             "Title": "Are you receiving any medical treatment or medication at present or have you received medical treatment in the last five years?",
             "Values": [
               "Yes",

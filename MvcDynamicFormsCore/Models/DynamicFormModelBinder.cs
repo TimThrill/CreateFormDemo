@@ -15,13 +15,22 @@ namespace MvcDynamicForms.Core
 
     public class DynamicFormModelBinder : IModelBinder
     {
+        /// <summary>
+        /// There are three main steps in binding a form.
+        /// 1. Read submitted form from context.
+        /// 2. Get a model object.
+        /// 3. Write result to bindingContext.
+        /// </summary>
+        /// <param name="bindingContext"></param>
+        /// <returns></returns>
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)
                 throw new ArgumentNullException(nameof(bindingContext));
 
+            // 1. Get submitted form from context
             var postedForm = bindingContext.ActionContext.HttpContext.Request.Form;
-
+            // 2. Get a Form object
             var form = (Form)bindingContext.Model;
 
             if (form == null && !string.IsNullOrEmpty(postedForm[MagicStrings.MvcDynamicSerializedForm]))
@@ -63,6 +72,8 @@ namespace MvcDynamicForms.Core
                     txtField.Value = postedForm[key];
                 }
             }
+
+            // 3. Write results to model
             bindingContext.Result = ModelBindingResult.Success(form);
             return TaskCache.CompletedTask;
         }
