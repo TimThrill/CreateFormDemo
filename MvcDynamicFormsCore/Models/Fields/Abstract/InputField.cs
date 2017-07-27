@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     public delegate void ValidatedEventHandler(InputField inputField, InputFieldValidationEventArgs e);
 
@@ -111,7 +112,13 @@
             wrapper.Attributes["id"] = PlaceHolders.FieldWrapperId;
             // wrapper.InnerHtml = PlaceHolders.Prompt + PlaceHolders.Error + PlaceHolders.Input;
             wrapper.InnerHtml.Append(PlaceHolders.Prompt + PlaceHolders.Error + PlaceHolders.Input);
-            return wrapper.ToString();
+            // Added by cong
+            StringWriter w = new StringWriter();
+            wrapper.WriteTo(w, System.Text.Encodings.Web.HtmlEncoder.Default);
+            string res = w.ToString();
+            w.Close();
+            // return wrapper.ToString();
+            return res;
         }
 
         protected string GetPrompt()

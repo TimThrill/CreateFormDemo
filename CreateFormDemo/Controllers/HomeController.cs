@@ -44,7 +44,6 @@ namespace CreateFormDemo.Controllers
 
         public IActionResult Form()
         {
-            /*
             Form form = new Form();
             using (StreamReader file = System.IO.File.OpenText(hostingEnvironment.ContentRootPath + "\\FormModule.json"))
             {
@@ -76,8 +75,8 @@ namespace CreateFormDemo.Controllers
                     }
                 }
             }
-            */
-            var form = FormProvider.GetForm();
+            
+            //var form = FormProvider.GetForm();
             form.Serialize = true;
             return View(form);
         }
