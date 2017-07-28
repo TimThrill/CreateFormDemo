@@ -82,7 +82,7 @@ namespace CreateFormDemo.Controllers
                             {
                                 ResponseTitle = title,
                                 Prompt = questionName + title,
-                                Required = true
+                                Required = question["Required"] == null ? true : (bool)question["Required"]
                             };
                             form.Fields.Add(textArea);
                         }
