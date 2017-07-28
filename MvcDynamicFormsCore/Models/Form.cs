@@ -145,36 +145,24 @@
         {
             using (StreamReader file = System.IO.File.OpenText(filePath))
             {
-                Module testModule = JsonConvert.DeserializeObject<Module>(file.ReadToEnd());
-                Newtonsoft.Json.Linq.JObject moduleForm = Newtonsoft.Json.Linq.JObject.Parse(file.ReadToEnd());
-                string formName = moduleForm["Name"].ToString();
-
-                Newtonsoft.Json.Linq.JToken sections = moduleForm["Sections"];
-                foreach (var section in sections)
+                Module parsedModule = JsonConvert.DeserializeObject<Module>(file.ReadToEnd());
+                foreach (var section in parsedModule.Sections)
                 {
-                    foreach (var question in section["Questions"])
+                    foreach (var question in section.Questions)
                     {
-                        string questionType = question["Type"].ToString();
-                        string questionName = question["Name"].ToString();
-                        if (!string.IsNullOrEmpty(questionName))
-                            questionName += ". ";
-                        if (questionType.Equals("RadioList"))
+                        if (question.Type.Equals(typeof(RadioList).Name))
                         {
-                            string title = question["Title"].ToString();
-                            List<string> values = question["Values"].ToObject<List<string>>();
-                            List<string> answer = question["Answers"].ToObject<List<string>>();
-
                             var radioOption = new RadioList
                             {
-                                ResponseTitle = title,
-                                Required = question["Required"] == null ? true : (bool)question["Required"],
-                                Prompt = questionName + title,
-                                Orientation = MvcDynamicForms.Core.Enums.Orientation.Horizontal,
+                                ResponseTitle = question.Title,
+                                Required = question.Required,
+                                Prompt = question.Title,
+                                Orientation = Enums.Orientation.Horizontal,
                             };
-                            radioOption.AddChoices(values);
+                            radioOption.AddChoices(question.Values);
                             foreach(var choice in radioOption.Choices)
                             {
-                                if (choice.Value.Equals(answer.First()))
+                                if (choice.Value.Equals(question.Answers.First()))
                                 {
                                     choice.Selected = true;
                                     break;
@@ -182,36 +170,30 @@
                             }
                             Fields.Add(radioOption);
                         }
-                        else if (questionType.Equals("TextArea"))
+                        else if (question.Type.Equals(typeof(TextArea).Name))
                         {
-                            string title = question["Title"].ToString();
-                            List<string> answer = question["Answers"].ToObject<List<string>>();
-                        
                             var textArea = new TextArea
                             {
-                                ResponseTitle = title,
-                                Prompt = questionName + title,
-                                Required = question["Required"] == null ? true : (bool)question["Required"]
+                                ResponseTitle = question.Title,
+                                Prompt = question.Title,
+                                Required = question.Required
                             };
-                            if (!string.IsNullOrEmpty(answer.First()))
-                                textArea.Value = answer.First();
+                            if (!string.IsNullOrEmpty(question.Answers.First()))
+                                textArea.Value = question.Answers.First();
                             Fields.Add(textArea);
                         }
-                        else if (questionType.Equals("CheckBoxList"))
+                        else if (question.Type.Equals(typeof(CheckBoxList).Name))
                         {
-                            string title = question["Title"].ToString();
-                            List<string> answers = question["Answers"].ToObject<List<string>>();
                             var checkBoxList = new CheckBoxList
                             {
-                                ResponseTitle = title,
-                                Prompt = questionName + title,
+                                ResponseTitle = question.Title,
+                                Prompt = question.Title,
                                 Orientation = Enums.Orientation.Horizontal
                             };
-                            List<string> choices = question["Values"].ToObject<List<string>>();
-                            checkBoxList.AddChoices(choices);
+                            checkBoxList.AddChoices(question.Values);
                             foreach (var choice in checkBoxList.Choices)
                             {
-                                foreach (var value in answers)
+                                foreach (var value in question.Answers)
                                 {
                                     if (value.Equals(choice.Value))
                                     {
