@@ -10,10 +10,12 @@ namespace MvcDynamicFormsCore.Models
         public Question()
         {
             Values = new List<object>();
+            Answers = new List<string>();
         }
         public string Name { get; set; }
         public string Type { get; set; }
         public string Title { get; set; }
+        public List<string> Answers { get; set; }
         public List<object> Values { get; set; }
         public bool Required { get; set; }
     }

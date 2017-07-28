@@ -104,7 +104,7 @@
         /// Provides a convenient way to add choices.
         /// </summary>
         /// <param name="choices"></param>
-        public void AddChoices(string[] choices)
+        public void AddChoices(List<string> choices)
         {
             if (choices == null) return;
 

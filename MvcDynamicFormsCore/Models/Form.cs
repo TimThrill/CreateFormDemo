@@ -126,12 +126,105 @@
                     foreach (var choice in listField.Choices)
                     {
                         question.Values.Add(choice.Value);
+                        if (choice.Selected)
+                            question.Answers.Add(choice.Value);
                     }
+                }
+                else if (field is TextField)
+                {
+                    TextField textField = (TextField)field;
+                    question.Answers.Add(textField.Value);
                 }
                 module.Sections[0].Questions.Add(question);
             }
             string res = JsonConvert.SerializeObject(module);
             return res;
+        }
+
+        public void parseJsonToForm(string filePath)
+        {
+            using (StreamReader file = System.IO.File.OpenText(filePath))
+            {
+                Module testModule = JsonConvert.DeserializeObject<Module>(file.ReadToEnd());
+                Newtonsoft.Json.Linq.JObject moduleForm = Newtonsoft.Json.Linq.JObject.Parse(file.ReadToEnd());
+                string formName = moduleForm["Name"].ToString();
+
+                Newtonsoft.Json.Linq.JToken sections = moduleForm["Sections"];
+                foreach (var section in sections)
+                {
+                    foreach (var question in section["Questions"])
+                    {
+                        string questionType = question["Type"].ToString();
+                        string questionName = question["Name"].ToString();
+                        if (!string.IsNullOrEmpty(questionName))
+                            questionName += ". ";
+                        if (questionType.Equals("RadioList"))
+                        {
+                            string title = question["Title"].ToString();
+                            List<string> values = question["Values"].ToObject<List<string>>();
+                            List<string> answer = question["Answers"].ToObject<List<string>>();
+
+                            var radioOption = new RadioList
+                            {
+                                ResponseTitle = title,
+                                Required = question["Required"] == null ? true : (bool)question["Required"],
+                                Prompt = questionName + title,
+                                Orientation = MvcDynamicForms.Core.Enums.Orientation.Horizontal,
+                            };
+                            radioOption.AddChoices(values);
+                            foreach(var choice in radioOption.Choices)
+                            {
+                                if (choice.Value.Equals(answer.First()))
+                                {
+                                    choice.Selected = true;
+                                    break;
+                                }
+                            }
+                            Fields.Add(radioOption);
+                        }
+                        else if (questionType.Equals("TextArea"))
+                        {
+                            string title = question["Title"].ToString();
+                            List<string> answer = question["Answers"].ToObject<List<string>>();
+                        
+                            var textArea = new TextArea
+                            {
+                                ResponseTitle = title,
+                                Prompt = questionName + title,
+                                Required = question["Required"] == null ? true : (bool)question["Required"]
+                            };
+                            if (!string.IsNullOrEmpty(answer.First()))
+                                textArea.Value = answer.First();
+                            Fields.Add(textArea);
+                        }
+                        else if (questionType.Equals("CheckBoxList"))
+                        {
+                            string title = question["Title"].ToString();
+                            List<string> answers = question["Answers"].ToObject<List<string>>();
+                            var checkBoxList = new CheckBoxList
+                            {
+                                ResponseTitle = title,
+                                Prompt = questionName + title,
+                                Orientation = Enums.Orientation.Horizontal
+                            };
+                            List<string> choices = question["Values"].ToObject<List<string>>();
+                            checkBoxList.AddChoices(choices);
+                            foreach (var choice in checkBoxList.Choices)
+                            {
+                                foreach (var value in answers)
+                                {
+                                    if (value.Equals(choice.Value))
+                                    {
+                                        choice.Selected = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            Fields.Add(checkBoxList);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
