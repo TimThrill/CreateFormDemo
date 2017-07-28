@@ -10,6 +10,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.IO;
+    using MvcDynamicFormsCore.Models;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Represents an html input form that can be dynamically rendered at runtime.
@@ -103,6 +105,33 @@
             }
 
             return null;
+        }
+
+        public string RenderToJson()
+        {
+            Module module = new Module();
+            module.Sections.Add(new Section());
+            foreach (InputField field in InputFields)
+            {
+                Question question =
+                    new Question
+                    {
+                        Type = field.GetType().Name,
+                        Title = field.Prompt,
+                        Required = field.Required,
+                    };
+                if (field is ListField)
+                {
+                    ListField listField = (ListField)field;
+                    foreach (var choice in listField.Choices)
+                    {
+                        question.Values.Add(choice.Value);
+                    }
+                }
+                module.Sections[0].Questions.Add(question);
+            }
+            string res = JsonConvert.SerializeObject(module);
+            return res;
         }
 
         /// <summary>
