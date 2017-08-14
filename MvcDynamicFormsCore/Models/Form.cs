@@ -137,7 +137,7 @@
                 }
                 module.Sections[0].Questions.Add(question);
             }
-            string res = JsonConvert.SerializeObject(module);
+            string res = JsonConvert.SerializeObject(module, Formatting.Indented);
             return res;
         }
 
